@@ -1,0 +1,93 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  max-width: 550px;
+}
+
+h2 {
+  margin: 0.3em 0;
+}
+
+#frame {
+  pointer-events: none;
+  max-height: 320px;
+}
+
+#guesses > span {
+  cursor: pointer;
+  font-size: x-large;
+  margin-right: 0.35em;
+  padding: 0 0.2em;
+  border: 0.2em rgb(58, 127, 255) solid;
+  background-color: rgb(68, 68, 68);
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+}
+
+#guesses > span.current {
+  border: 0.2em darkblue solid;
+  background-color: rgb(58, 127, 255);
+}
+
+#guesses > span.toggled {
+  background-color: rgb(58, 127, 255);
+}
+
+#guesses > span:hover {
+  background-color: rgb(58, 127, 255);
+  border-color: rgb(58, 127, 255);
+}
+
+#guesses > span.winner {
+  background-color: rgb(0, 144, 74);
+  border-color: rgb(43, 255, 0);
+}
+
+#log {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 10fr;
+  grid-template-rows: repeat(6, 1fr);
+}
+
+#log > div {
+  border-bottom: rgb(165, 165, 165) solid 1px;
+  height: 1.5em;
+  /* align-self: center; */
+}
+
+/* remove border from last row */
+#log > div:nth-last-child(-n+3) {
+  border-bottom: none;
+}
+
+#log > .selection {
+  padding-left: 1em;
+}
+
+#log > .number, #log > .state {
+  text-align: center;
+  border-right: rgb(165, 165, 165) solid 1px;
+}
+
+#search {
+  font-size: large;
+}
+
+#results {
+  list-style-type: none;
+  padding: 0;
+  overflow: auto;
+  color: #0000EE;
+  cursor: pointer;
+  max-height: 15em;
+}
+
+.result {
+  margin: 0;
+  padding: 0;
+}
+
+.result:hover {
+  color: #00005b;
+  background-color: rgb(212, 212, 212);
+}
