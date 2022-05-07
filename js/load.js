@@ -17,7 +17,7 @@ try {
   }
 
   // load data
-  const data = await fetchJSON('../data/data.json');
+  const data = await fetchJSON('./data/data.json');
 
   // test data
   if (!data) {

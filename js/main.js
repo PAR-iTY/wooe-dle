@@ -62,7 +62,7 @@ const showResults = results => {
 
 // show current frame
 const showFrame = number => {
-  document.getElementById('frame').src = `../data/img/${answer}/${number}.png`;
+  document.getElementById('frame').src = `./data/img/${answer}/${number}.png`;
 };
 
 // increment guess counter
@@ -186,7 +186,7 @@ const selectResult = e => {
       logGuess('❌', selection);
 
       // update game state with lose message
-      stateMsg('Game over loser 😢');
+      stateMsg('You lose, Jabroni');
 
       endGame();
     } else {
