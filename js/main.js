@@ -1,3 +1,5 @@
+console.time('main.js load time');
+
 /**
  * dynamically imported if game dependencies load
  * load.js adds window.fuse to pass across modules (hacky)
@@ -37,6 +39,7 @@ const fuseSearch = e => {
   const pattern = e.target.value;
 
   // get full results
+  // note: 'fuse' comes from load.js setting 'window.fuse'
   const results = fuse.search(pattern);
 
   // get list of titles from full results set
@@ -62,6 +65,7 @@ const showResults = results => {
 
 // show current frame
 const showFrame = number => {
+  // this way of changing src is prob why its slow
   document.getElementById('frame').src = `./data/img/${answer}/${number}.png`;
 };
 
@@ -85,9 +89,11 @@ const removeGuess = selectionEvent => {
   // https://fusejs.io/api/methods.html#remove
 
   // get selection item
+  // note: 'fuse' comes from load.js setting 'window.fuse'
   const item = fuse.search(selectionEvent.target.textContent)[0].item;
 
   // remove selection item from fuse search and data.json variable
+  // note: 'fuse' comes from load.js setting 'window.fuse'
   fuse.remove(doc => doc === item);
 
   // remove selection from results list to help avoid double-removal error
@@ -155,7 +161,7 @@ const selectResult = e => {
       // console.log('correct -> end game -> you win');
 
       // update game state with win message
-      stateMsg('Game over winner! 🥳');
+      stateMsg('You win! 🥳');
 
       endGame();
 
@@ -186,7 +192,7 @@ const selectResult = e => {
       logGuess('❌', selection);
 
       // update game state with lose message
-      stateMsg('You lose, Jabroni');
+      stateMsg('You lose Jabroni');
 
       endGame();
     } else {
@@ -227,8 +233,13 @@ search.addEventListener('input', fuseSearch);
 start code execution
 *********************************************************/
 
-// show current frame
+// show first frame
 showFrame(guess);
 
 // show game state message
 stateMsg();
+
+// export answer for load.js to use for image preloading
+export { answer, totalGuesses };
+
+console.timeEnd('main.js load time');
