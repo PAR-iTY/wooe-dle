@@ -14,13 +14,13 @@ globals
 // .replace(/\W/g, '')
 
 // answers
-const answer = ['The Gang Sells Out', 'The Gang Gets Invincible'][0];
+const answer = sessionStorage.getItem('answer');
 
 // set guess state
-let guess = 1;
+let guess = parseInt(sessionStorage.getItem('guess'));
 
 // set total guesses
-const totalGuesses = 6;
+const totalGuesses = parseInt(sessionStorage.getItem('totalGuesses'));
 
 // get commonly updated elements
 const resultsList = document.getElementById('results');
@@ -65,13 +65,18 @@ const showResults = results => {
 
 // show current frame
 const showFrame = number => {
-  // this way of changing src is prob why its slow
-  document.getElementById('frame').src = `./data/img/${answer}/${number}.png`;
+  let frames = document.getElementById('frame-wrap').children;
+
+  // map over nodelist to hide all frames
+  Array.from(frames, elm => elm.classList.add('hidden'));
+
+  // reveal current frame
+  frames[number - 1].classList.remove('hidden');
 };
 
 // increment guess counter
 const addGuess = () => {
-  // remember 'guess' and 'guesses' are globals
+  // remember 'guess' and 'guesses' are session storage globals
 
   // remove current class from previous guess
   guesses.lastElementChild.classList.remove('current');
@@ -239,7 +244,11 @@ showFrame(guess);
 // show game state message
 stateMsg();
 
-// export answer for load.js to use for image preloading
-export { answer, totalGuesses };
+// reveal html now that dependencies and game logic are loaded
+// todo: could toggle a splash page for game app here
+document.getElementById('wrap').style.visibility = 'visible';
 
 console.timeEnd('main.js load time');
+
+// export answer for load.js to use for image preloading
+export { answer, totalGuesses };

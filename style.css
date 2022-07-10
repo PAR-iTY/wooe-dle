@@ -8,17 +8,23 @@ body {
 #wrap {
   max-width: 550px;
   margin: 0.2em;
+  visibility: hidden;
 }
 
 h2 {
   margin: 0.3em 0;
 }
 
-#frame {
+#frame-wrap > img {
   pointer-events: none;
   max-height: 320px;
   margin-right:0.1em;
   max-width: calc(100vw - 0.4em);
+}
+
+/* utility mainly for toggling frame images */
+.hidden {
+  display: none;
 }
 
 #guesses > span {
