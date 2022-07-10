@@ -98,6 +98,12 @@ try {
   console.timeEnd('main.js dynamic import load time');
 
   console.log('all game dependencies loaded');
+
+  // reveal html now that dependencies and game logic are loaded
+  // todo: could toggle a splash page for game app here
+  console.log('reveal game app');
+
+  document.getElementById('wrap').style.visibility = 'visible';
 } catch (e) {
   // log error for tracing
   console.error(e);

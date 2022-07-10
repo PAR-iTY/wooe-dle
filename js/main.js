@@ -74,6 +74,23 @@ const showFrame = number => {
   frames[number - 1].classList.remove('hidden');
 };
 
+// reveal frames and guesses that winner did not see
+const showFrames = () => {
+  // if this is last guess theres no remainder
+  if (guess < totalGuesses) {
+    // build up remainder guess number html
+    let remainder = ``;
+
+    // calculate number of remaining frames to reveal
+    for (let start = guess + 1; start <= totalGuesses; start++) {
+      remainder += `<span>${start}</span>`;
+    }
+
+    // add remainder
+    guesses.insertAdjacentHTML('beforeend', remainder);
+  }
+};
+
 // increment guess counter
 const addGuess = () => {
   // remember 'guess' and 'guesses' are session storage globals
@@ -157,6 +174,7 @@ const selectResult = e => {
     // prevent double-removal error by making unclickable
     e.target.style.pointerEvents = 'none';
 
+    // for convienience
     const selection = e.target.textContent;
 
     // remove previous guess from fuse search
@@ -174,19 +192,7 @@ const selectResult = e => {
       guesses.lastElementChild.classList.add('winner');
 
       // reveal frames and guesses that winner did not see
-      // if this is last guess theres no remainder
-      if (guess < totalGuesses) {
-        // build up remainder guess number html
-        let remainder = ``;
-
-        // calculate number of remaining frames to reveal
-        for (let start = guess + 1; start <= totalGuesses; start++) {
-          remainder += `<span>${start}</span>`;
-        }
-
-        // add remainder
-        guesses.insertAdjacentHTML('beforeend', remainder);
-      }
+      showFrames();
 
       // add correct guess to log
       logGuess('✔️', selection);
@@ -243,10 +249,6 @@ showFrame(guess);
 
 // show game state message
 stateMsg();
-
-// reveal html now that dependencies and game logic are loaded
-// todo: could toggle a splash page for game app here
-document.getElementById('wrap').style.visibility = 'visible';
 
 console.timeEnd('main.js load time');
 
