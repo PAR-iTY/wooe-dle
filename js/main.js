@@ -139,6 +139,34 @@ const logGuess = (state, selection) => {
   document.querySelectorAll('.selection')[
     guess - 1
   ].textContent = `${selection}`;
+
+  // idea: since i am logging stuff for stats...
+  // do i reformat this DOM log code to refer to stats log?
+  // can nice tables be generated that way with a library etc
+  // solves current stupid css margin nonsense as a bonus
+
+  // get stats object
+  const stats = JSON.parse(localStorage.getItem('stats'));
+
+  // const guessLog = stats.games[
+  //   games.length - 1
+  // ].guessLog;
+
+  // console.log('guessLog:', guessLog, typeof guessLog);
+
+  // log guess
+  stats.games[games.length - 1].guessLog[guess] = state;
+
+  console.log('stats: ', stats);
+
+  // update
+  localStorage.setItem('stats', JSON.stringify(stats));
+};
+
+// work out player stats from local storage log
+const playerStats = () => {
+  // get stats object
+  const stats = JSON.parse(localStorage.getItem('stats'));
 };
 
 // purely UI function to see older frames
@@ -251,6 +279,8 @@ showFrame(guess);
 stateMsg();
 
 console.timeEnd('main.js load time');
+
+// localStorage.setItem('local-persist', 'between code-changes');
 
 // export answer for load.js to use for image preloading
 export { answer, totalGuesses };

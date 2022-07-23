@@ -53,10 +53,15 @@ try {
   // add globals for game logic to session storage
   // note: items are always stored as strings
 
+  // idea: migrate sessionStorage to localStorage stats obj
+  //       would prob at scale be bad perf get/setting stats
+  //       could refactor to not be one big object...
+  //       defeats initial point of aggregation...
+
   // answers
   sessionStorage.setItem(
     'answer',
-    ['The Gang Sells Out', 'The Gang Gets Invincible'][0]
+    ['The Gang Sells Out', 'The Gang Gets Invincible'][1]
   );
 
   // set guess state
@@ -65,12 +70,56 @@ try {
   // set total guesses
   sessionStorage.setItem('totalGuesses', '6');
 
+  // get empty object for recording this game stats
+  let stats = JSON.parse(localStorage.getItem('stats'));
+
+  if (!stats) {
+    // start new stats
+    stats = {
+      games: [{ timestamp: Date.now(), state: 'new', guessLog: {} }]
+    };
+  } else {
+    // load game
+    switch (stats.games[games.length - 1].state) {
+      case 'new':
+        console.log('latest game from stats is a new game');
+        break;
+      case 'inprogress':
+        console.log('latest game from stats is in progress');
+        break;
+      case 'won':
+        console.log('latest game from stats was won');
+        break;
+      case 'lost':
+        console.log('latest game from stats was lost');
+        break;
+      default:
+        console.warn('latest game state not recognised');
+    }
+  }
+
+  // } else if (stats.games[games.length - 1].guessLog.keys(obj).length === 0) {
+  // stats exists but latest game has no guesses
+  // console.log('stats exists but latest game has no guesses');
+
+  // update timestamp?
+  // stats.games[games.length - 1].timestamp = Date.now();
+
+  // } else {
+  // get existing stats
+  // add new game template
+  // console.log(typeof stats.games, stats.games);
+  // stats.games.push({ timestamp: Date.now(), guessLog: {} });
+  // }
+
+  console.log(stats);
+
+  // set up local storage for player stats
+  localStorage.setItem('stats', JSON.stringify(stats));
+
   console.time('images load time');
 
-  // preload images using exported variables
-  // im not sure if this images array is cached for use by main.js
-  // perhaps it could be window.images, or this code shifted to main.js
-  // or perhaps images need to be attached to DOM to be cached properly
+  // preload images
   let images = [];
 
   for (let i = 1; i <= parseInt(sessionStorage.getItem('totalGuesses')); i++) {
@@ -101,8 +150,6 @@ try {
 
   // reveal html now that dependencies and game logic are loaded
   // todo: could toggle a splash page for game app here
-  console.log('reveal game app');
-
   document.getElementById('wrap').style.visibility = 'visible';
 } catch (e) {
   // log error for tracing
